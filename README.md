@@ -1,6 +1,6 @@
 # Flask Web Application
 
-[Starter Code Repo:](https://github.com/YaleDHLab/flask-react-boilerplate)
+[Starter Code Repo](https://github.com/YaleDHLab/flask-react-boilerplate)
 
 # Flask React Boilerplate
 
