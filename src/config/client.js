@@ -5,6 +5,7 @@ let config = {
     port: 7082,
     prefix: 'api'
   },
+  endpoint: ''
 };
 
 config.endpoint = config.api.protocol + '://' +
