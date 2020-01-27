@@ -4,3 +4,4 @@ gunicorn
 pylint
 pymongo
 pytest
+pyodbc

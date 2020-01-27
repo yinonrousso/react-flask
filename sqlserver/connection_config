@@ -1,0 +1,6 @@
+<Ubuntu>
+driver=ODBC Driver 17 for SQL Server
+server=localhost
+uid=sa
+pwd=sqlPa$$123
+</config>
