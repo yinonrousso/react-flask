@@ -4,3 +4,10 @@ server=localhost
 uid=sa
 pwd=sqlPa$$123
 </config>
+
+<MacOS>
+driver=FreeTDS
+server=localhost
+uid=sa
+pwd=sqlPa$$123
+</config>
