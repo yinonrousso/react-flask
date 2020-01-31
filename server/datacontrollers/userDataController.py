@@ -3,7 +3,7 @@ from models.user import User
 
 class UserDataController:
 
-    __connection = SqlConnection().getConnection()
+    __cursor = SqlConnection().getConnection().cursor()
 
     def getUsers(self, userIds=None):
         userSQL = '''SELECT pkId userId,
@@ -22,7 +22,7 @@ class UserDataController:
             uidInClause = ","
             userSQL += f" AND u.pkId IN ({uidInClause.join(['?' for u in userIds])}) "
 
-        data_table = self.__connection.cursor().execute(userSQL, params) if params != None else self.__connection.cursor().execute(userSQL)
+        data_table = self.__cursor.execute(userSQL, params) if params != None else self.__cursor.execute(userSQL)
 
         return [User(row.userId, row.firstName, row.lastName, row.email) for row in data_table]
 
@@ -38,10 +38,10 @@ class UserDataController:
             params.append(user.id)
 
         try:
-            row = self.__connection.cursor().execute(sql, params).fetchone()
-            self.__connection.cursor().commit()
+            row = self.__cursor.execute(sql, params).fetchone()
+            self.__cursor.commit()
         except:
-            self.__connection.cursor().rollback()
+            self.__cursor.rollback()
             raise
 
         return self.getUsers([row.userId])
