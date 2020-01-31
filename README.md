@@ -20,10 +20,11 @@ Simple boilerplate for a Flask backend and React client including:
 To install the boilerplate dependencies, you can run:
 
 ```bash
-git clone https://github.com/YaleDHLab/flask-react-boilerplate
-cd flask-react-boilerplate
 npm install --no-optional
+python3 -m venv py3venv
+. py3venv/bin/activate
 pip install -r requirements.txt
+deactivate
 ```
 
 ## Quickstart
@@ -69,3 +70,11 @@ To lint the Python files (located in `server`), run:
 ```bash
 npm run lint-py
 ```
+
+# SQL Server
+
+## Setup
+https://docs.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server?view=sql-server-ver15
+
+## Connect Flask
+https://github.com/mkleehammer/pyodbc/wiki

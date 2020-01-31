@@ -15,7 +15,7 @@
     "compress": "webpack --config webpack.config.js --mode=production",
     "production": "npm run build && npm run serve",
     "py3venv": "python3 py3venv-setup.py",
-    "serve": "npm run py3venv && source py3venv/bin/activate; FLASK_APP=server/app.py flask run --port=7082",
+    "serve": ". py3venv/bin/activate && FLASK_APP=server/app.py flask run --port=7082",
     "lint-js": "eslint -c './src/config/.eslintrc.js' src/",
     "lint-py": "pylint server/app.py",
     "lint": "npm run lint-js && npm run lint-py",

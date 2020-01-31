@@ -1,6 +1,6 @@
-import pyodbc, os
+import pyodbc, platform
 
-class ConfigNotFoundException(Exception):
+class OperatingSystemNotSupported(Exception):
     def __init__(self, msg):
         super().__init__(msg)
 
@@ -13,21 +13,13 @@ class SqlConnection:
         return self.__conn
     
     def __openConnection(self):
-        config = open('sqlserver/connection_config').read()
-        configs = config.split('</config>')
-        os_entry = "<MacOS>"
-        #os_entry = "<Ubuntu>"
-        # os_specific_config = list(filter(lambda cfg: os_entry in cfg, configs))
-        # if len(os_specific_config) == 0:
-        #     raise ConfigNotFoundException("{} config not found".format(os_entry))
-        # config_keys = os_specific_config[0].split(os.linesep)
-        # driver = list(filter(lambda key: key.startswith('driver'), config_keys))[0].replace('driver=','')
-        # server = list(filter(lambda key: key.startswith('server'), config_keys))[0].replace('server=','')
-        # uid = list(filter(lambda key: key.startswith('uid'), config_keys))[0].replace('uid=','')
-        # pwd = list(filter(lambda key: key.startswith('pwd'), config_keys))[0].replace('pwd=','')
-        # database = (list(filter(lambda key: key.startswith('database'), config_keys)) or ['db1'])[0]
-        # return pyodbc.connect(driver=driver, server=server, database=database, uid=uid, pwd=pwd)
-        return pyodbc.connect('DSN=MYMSSQL;UID=sa;PWD=sqlPa$$123;database=db1') 
+        conn_strings = open('sqlserver/connection_strings').read().split('</config>')
+        os_name = platform.system()
+        filtered_conn_strings = list(filter(lambda conn_str: conn_str.startswith(f'<{os_name}>'), conn_strings))
+        if len(filtered_conn_strings) == 0:
+            raise OperatingSystemNotSupported(f'{os_name} operating system not supported')
+        conn_string = filtered_conn_strings[0].replace(f'<{os_name}>', '')
+        return pyodbc.connect(conn_string) 
 
 
     def closeConnection(self):

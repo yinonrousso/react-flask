@@ -19,8 +19,8 @@ class UserDataController:
                 if type(uid) is not int:
                     raise TypeError("Ids must be of type int")
             params = userIds
-            uidInClause = ",",
-            userSQL += " AND u.pkId IN ({}) ".format(uidInClause.join(['?' for u in userIds]))
+            uidInClause = ","
+            userSQL += f" AND u.pkId IN ({uidInClause.join(['?' for u in userIds])}) "
 
         data_table = self.__connection.cursor().execute(userSQL, params) if params != None else self.__connection.cursor().execute(userSQL)
 
@@ -38,9 +38,9 @@ class UserDataController:
             params.append(user.id)
 
         try:
-            row self.__connection.cursor().execute(sql, params).fetchone()
+            row = self.__connection.cursor().execute(sql, params).fetchone()
             self.__connection.cursor().commit()
-        except
+        except:
             self.__connection.cursor().rollback()
             raise
 

@@ -1,0 +1,3 @@
+<Linux>driver=ODBC Driver 17 for SQL Server;server=localhost;uid=sa;pwd=sqlPa$$123;database=db1</config>
+<Darwin>dsn=MYMSSQL;server=localhost;uid=sa;pwd=sqlPa$$123;database=db1</config>
+<Windows>placeholder</config>
