@@ -6,8 +6,10 @@ class UserDataController:
     __connection = SqlConnection().getConnection()
 
     def getUsers(self, userIds=None):
-        userSQL = '''SELECT id userId,
-                     CONCAT(fname, ' ', lname) userName
+        userSQL = '''SELECT pkId userId,
+                     fname firstName,
+                     lname lastName,
+                     email email
                      FROM Users u WHERE 1=1'''
         params = None
         if (userIds != None and len(userIds) > 0):
@@ -18,8 +20,29 @@ class UserDataController:
                     raise TypeError("Ids must be of type int")
             params = userIds
             uidInClause = ",",
-            userSQL += " AND u.id IN ({}) ".format(uidInClause.join([str(u) for u in userIds]))
+            userSQL += " AND u.pkId IN ({}) ".format(uidInClause.join(['?' for u in userIds]))
 
         data_table = self.__connection.cursor().execute(userSQL, params) if params != None else self.__connection.cursor().execute(userSQL)
 
-        return [User(row.userId, row.userName) for row in data_table]
+        return [User(row.userId, row.firstName, row.lastName, row.email) for row in data_table]
+
+    def saveUser(user):
+        if user == None or type(user) is not User:
+            raise TypeError("invalid user argument")
+        
+        params = [user.fname, user.lname, user.email]
+        if user.id > 0:
+            sql = "INSERT INTO Users (fname, lname, email) OUTPUT inserted.pkId userId VALUES (?, ?, ?)"
+        else:
+            sql = "UPDATE Users SET fname=?, lname=?, email=? OUTPUT inserted.pkId userId WHERE pkId=?"
+            params.append(user.id)
+
+        try:
+            row self.__connection.cursor().execute(sql, params).fetchone()
+            self.__connection.cursor().commit()
+        except
+            self.__connection.cursor().rollback()
+            raise
+
+        return self.getUsers([row.userId])
+        

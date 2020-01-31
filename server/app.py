@@ -2,6 +2,7 @@
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 from datacontrollers.userDataController import UserDataController
+import json
 
 '''Main wrapper for app creation'''
 app = Flask(__name__, static_folder='../build')
@@ -11,21 +12,19 @@ CORS(app)
 # API routes
 ##
 
-@app.route('/api/items')
-def items():
-  '''Sample API route for data'''
-  return jsonify([{'title': 'A'}, {'title': 'B'}])
-
-@app.route('/api/users')
+@app.route('/api/users', methods=['GET'])
 def getUsers():
   return jsonify(UserDataController().getUsers())
 
-@app.route('/api/user/<int:uid>')
+@app.route('/api/user/<int:uid>', methods=['GET'])
 def getUser(uid):
   return jsonify(UserDataController().getUsers([uid]))
 
-
-  
+@app.route('/api/user', methods=['POST'])
+def saveUser():
+  user_json = request.get_json()
+  user = json.loads(user_json)
+  return jsonify(UserDataController().saveUser(user))
 
 ##
 # View route
